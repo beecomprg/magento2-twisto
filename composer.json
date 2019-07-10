@@ -1,7 +1,11 @@
 {
   "name": "beecomprg/module-twisto",
   "description": "Magento 2 Twisto payment gateway",
+  "type": "magento2-module",
   "license": "MIT",
+  "version": "0.1.0",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "Beecom",
@@ -15,7 +19,17 @@
     "checkout",
     "fulfillment"
   ],
-  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.magento.com/"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.1"
+    }
+  },
   "require": {
     "magento/module-checkout": "100.*",
     "beecom/module-core": ">=1.0.3",
