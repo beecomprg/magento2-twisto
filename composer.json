@@ -32,7 +32,7 @@
   },
   "require": {
     "magento/module-checkout": "100.2.*",
-    "beecom/module-core": ">=1.0.3",
+    "beecomprg/module-core": ">=1.0.3",
     "twisto-payments/twisto": "2.*"
   },
   "autoload": {
