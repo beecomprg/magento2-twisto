@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <twisto>
+                <active>0</active>
+                <title>Twisto</title>
+                <debug>0</debug>
+                <model>TwistoFacade</model>
+                <payment_action>capture</payment_action>
+                <public_key></public_key>
+                <secret_key></secret_key>
+                <can_authorize>0</can_authorize>
+                <can_capture>1</can_capture>
+                <can_void>0</can_void>
+                <can_review_payment>0</can_review_payment>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>0</can_refund>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>0</can_use_internal>
+                <sort_order>1</sort_order>
+                <order_status>pending_payment</order_status>
+                <paymentInfoKeys>txn_id</paymentInfoKeys>
+            </twisto>
+        </payment>
+    </default>
+</config>

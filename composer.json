@@ -1,0 +1,32 @@
+{
+  "name": "beecomprg/module-twisto",
+  "description": "Magento 2 Twisto payment gateway",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Beecom",
+      "email": "lukas@beecom.io"
+    }
+  ],
+  "keywords": [
+    "magento",
+    "magento2",
+    "payment",
+    "checkout",
+    "fulfillment"
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "magento/module-checkout": "100.*",
+    "beecom/module-core": ">=1.0.3",
+    "twisto-payments/twisto": "2.*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Beecom\\Twisto\\": ""
+    }
+  }
+}

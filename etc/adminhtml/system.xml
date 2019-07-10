@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="twisto" translate="label comment" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Twisto</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/twisto/active</config_path>
+                </field>
+                <field id="production_mode" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Production mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="public_key" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Public Key</label>
+                    <config_path>payment/twisto/public_key</config_path>
+                </field>
+                <field id="secret_key" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Secret Key</label>
+                    <config_path>payment/twisto/secret_key</config_path>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
