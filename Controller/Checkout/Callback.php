@@ -181,16 +181,19 @@ class Callback extends Action
     }
 
     protected function getAddress($object, $type){
+        $phoneNumberUtil = \libphonenumber\PhoneNumberUtil::getInstance();
         $addressType = 'get'. ucfirst($type) . 'Address';
         $address = $object->$addressType();
         $addressName = implode(" ", [$address->getFirstname(), $address->getLastname()]);
+        $phoneNumberObject = $phoneNumberUtil->parse($address->getTelephone(), 'CZ');
+        $phoneNumberFormatted = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::E164);
         return new Address(
             substr($addressName, 0, 100),
             preg_replace('#\R+#', ' ', substr($address->getStreetFull(), 0, 100)),
             substr($address->getCity(), 0, 100),
-            substr($address->getPostcode(), 0, 100),
+            substr(preg_replace("/[^0-9]/", "", $address->getPostcode()), 0, 5),
             substr($address->getCountry(), 0, 100),
-            $address->getTelephone()
+            $phoneNumberFormatted
         );
     }
 }
