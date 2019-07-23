@@ -300,13 +300,13 @@ define([
                   console.log('General error.', response);
                   fullScreenLoader.stopLoader();
                   self.isPlaceOrderActionAllowed(true);
-                  alert(response.toString());
+                  self.showErrorMessageFromResponse(response);
                 }
               );
             }).error(function( result ) {
               console.log(result);
               fullScreenLoader.stopLoader();
-              alert(result.message);
+              self.showErrorMessageFromResponse(response);
             });
           }
         ).always(
@@ -345,6 +345,17 @@ define([
       return $.when(
         placeOrderAction(this.getData(), this.messageContainer)
       );
+    },
+
+    showErrorMessageFromResponse: function (response) {
+      var self = this;
+      $.each(response.order, function(key,valueObj){
+        $.each(valueObj, function(keyR,valueObjR){
+          $.each(valueObjR, function(k, message){
+            alert(key + ': ' + message);
+          });
+        });
+      });
     }
 
   });
