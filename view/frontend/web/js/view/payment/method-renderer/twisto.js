@@ -178,7 +178,6 @@ define([
      * @returns {exports.initObservable}
      */
     initObservable: function () {
-      console.log('ola');
       // validator.setConfig(window.checkoutConfig.payment[this.getCode()]);
       this._super()
         .observe(['active']);
@@ -219,7 +218,6 @@ define([
      * @returns {String}
      */
     getSelector: function (field) {
-      console.log('ola');
       return '#' + this.getCode() + '_' + field;
     },
 
@@ -264,10 +262,8 @@ define([
               url: '/'+ self.getCode() +'/checkout/callback',
               type: 'POST',
             }).success(function( result ) {
-              console.log(result);
               Twisto.check(result.payload, function(response) { //success
                   if (response.status === 'accepted') {
-                    console.log(response.transaction_id);
                     self.setTransactionId(response.transaction_id);
                     $.when( //stupid way of adding txn id to order object
                       setPaymentInformationAction(self.messageContainer, self.getData())
@@ -293,18 +289,15 @@ define([
 
                   } else {
                     // platba byla zamítnuta
-                    console.log(response.reason);
                     self.messageContainer.addErrorMessage(response.reason);
                   }
                 }, function(response) { //error
-                  console.log('General error.', response);
                   fullScreenLoader.stopLoader();
                   self.isPlaceOrderActionAllowed(true);
                   self.showErrorMessageFromResponse(response);
                 }
               );
             }).error(function( result ) {
-              console.log(result);
               fullScreenLoader.stopLoader();
               self.showErrorMessageFromResponse(response);
             });
