@@ -31,7 +31,7 @@
     }
   },
   "require": {
-    "magento/module-checkout": "100.2.*",
+    "magento/module-checkout": "~100.2|~100.3",
     "beecomprg/magento-2-module-core": ">=1.0.3",
     "giggsey/libphonenumber-for-php": "8.10.15",
     "twisto-payments/twisto": "2.*"
