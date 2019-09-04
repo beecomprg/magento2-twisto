@@ -186,7 +186,7 @@ class Callback extends Action
         $address = $object->$addressType();
         $addressName = implode(" ", [$address->getFirstname(), $address->getLastname()]);
         $phoneNumberObject = $phoneNumberUtil->parse($address->getTelephone(), 'CZ');
-        $phoneNumberFormatted = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::E164);
+        $phoneNumberFormatted = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
         return new Address(
             substr($addressName, 0, 100),
             preg_replace('#\R+#', ' ', substr($address->getStreetFull(), 0, 100)),

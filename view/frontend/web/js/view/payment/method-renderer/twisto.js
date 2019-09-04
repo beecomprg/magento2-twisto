@@ -17,26 +17,28 @@ define([
   'Magento_Checkout/js/action/redirect-on-success',
   'Beecom_Twisto/js/view/payment/adapter',
   'Magento_Checkout/js/action/set-payment-information',
-  'Magento_Checkout/js/model/full-screen-loader'
+  'Magento_Checkout/js/model/full-screen-loader',
+  'Magento_Ui/js/model/messageList'
 ], function (
-  ko,
-  $,
-  Component,
-  placeOrderAction,
-  selectPaymentMethodAction,
-  quote,
-  customer,
-  paymentService,
-  checkoutData,
-  checkoutDataResolver,
-  registry,
-  additionalValidators,
-  Messages,
-  layout,
-  redirectOnSuccessAction,
-  twisto,
-  setPaymentInformationAction,
-  fullScreenLoader,
+    ko,
+    $,
+    Component,
+    placeOrderAction,
+    selectPaymentMethodAction,
+    quote,
+    customer,
+    paymentService,
+    checkoutData,
+    checkoutDataResolver,
+    registry,
+    additionalValidators,
+    Messages,
+    layout,
+    redirectOnSuccessAction,
+    twisto,
+    setPaymentInformationAction,
+    fullScreenLoader,
+    globalMessageList
 ) {
   'use strict';
 
@@ -68,8 +70,8 @@ define([
      */
     initialize: function () {
       var billingAddressCode,
-        billingAddressData,
-        defaultAddressData;
+          billingAddressData,
+          defaultAddressData;
 
       this._super().initChildren();
       quote.billingAddress.subscribe(function (address) {
@@ -89,8 +91,8 @@ define([
 
         if (billingAddressData) {
           checkoutProvider.set(
-            billingAddressCode,
-            $.extend(true, {}, defaultAddressData, billingAddressData)
+              billingAddressCode,
+              $.extend(true, {}, defaultAddressData, billingAddressData)
           );
         }
         checkoutProvider.on(billingAddressCode, function (providerBillingAddressData) {
@@ -180,7 +182,7 @@ define([
     initObservable: function () {
       // validator.setConfig(window.checkoutConfig.payment[this.getCode()]);
       this._super()
-        .observe(['active']);
+          .observe(['active']);
       // this.validatorManager.initialize();
       // this.initClientConfig();
 
@@ -252,61 +254,64 @@ define([
 
       if (this.validate() && additionalValidators.validate()) {
         this.isPlaceOrderActionAllowed(false);
+        globalMessageList.clear();
         fullScreenLoader.startLoader();
         $.when(
-          setPaymentInformationAction(this.messageContainer, self.getData())
+            setPaymentInformationAction(this.messageContainer, self.getData())
         ).done(
-          function () {
-            var Twisto = twisto.setup();
-            $.ajax({
-              url: '/'+ self.getCode() +'/checkout/callback',
-              type: 'POST',
-            }).success(function( result ) {
-              Twisto.check(result.payload, function(response) { //success
-                  if (response.status === 'accepted') {
-                    self.setTransactionId(response.transaction_id);
-                    $.when( //stupid way of adding txn id to order object
-                      setPaymentInformationAction(self.messageContainer, self.getData())
-                    ).done(function () {
-                      //FIXME pass the transaction id to additional data here
-                      self.getPlaceOrderDeferredObject()
-                        .fail(
-                          function () {
-                            self.isPlaceOrderActionAllowed(true);
-                          }
-                        ).done(
-                        function () {
-                          self.afterPlaceOrder();
+            function () {
+              var Twisto = twisto.setup();
+              $.ajax({
+                url: '/'+ self.getCode() +'/checkout/callback',
+                type: 'POST',
+              }).success(function( result ) {
+                Twisto.check(result.payload, function(response) { //success
+                      if (response.status === 'accepted') {
+                        self.setTransactionId(response.transaction_id);
+                        $.when( //stupid way of adding txn id to order object
+                            setPaymentInformationAction(self.messageContainer, self.getData())
+                        ).done(function () {
+                          //FIXME pass the transaction id to additional data here
+                          self.getPlaceOrderDeferredObject()
+                              .fail(
+                                  function () {
+                                    self.isPlaceOrderActionAllowed(true);
+                                  }
+                              ).done(
+                              function () {
+                                self.afterPlaceOrder();
 
-                          if (self.redirectAfterPlaceOrder) {
-                            redirectOnSuccessAction.execute();
-                          }
-                        }
-                      );
+                                if (self.redirectAfterPlaceOrder) {
+                                  redirectOnSuccessAction.execute();
+                                }
+                              }
+                          );
 
-                      return true;
-                    });
+                          return true;
+                        });
 
-                  } else {
-                    // platba byla zamítnuta
-                    self.messageContainer.addErrorMessage(response.reason);
-                  }
-                }, function(response) { //error
-                  fullScreenLoader.stopLoader();
-                  self.isPlaceOrderActionAllowed(true);
-                  self.showErrorMessageFromResponse(response);
-                }
-              );
-            }).error(function( result ) {
-              fullScreenLoader.stopLoader();
-              self.showErrorMessageFromResponse(response);
-            });
-          }
+                      } else {
+                        // platba byla zamítnuta
+                        globalMessageList.addErrorMessage({
+                          message: response.reason
+                        });
+                      }
+                    }, function(response) { //error
+                      fullScreenLoader.stopLoader();
+                      self.isPlaceOrderActionAllowed(true);
+                      self.showErrorMessageFromResponse(response);
+                    }
+                );
+              }).error(function( result ) {
+                fullScreenLoader.stopLoader();
+                self.showErrorMessageFromResponse(response);
+              });
+            }
         ).always(
-          function () {
-            // self.isPlaceOrderActionAllowed(true);
-            // fullScreenLoader.stopLoader();
-          }
+            function () {
+              // self.isPlaceOrderActionAllowed(true);
+              // fullScreenLoader.stopLoader();
+            }
         );
         return true;
       }
@@ -336,18 +341,30 @@ define([
      */
     getPlaceOrderDeferredObject: function () {
       return $.when(
-        placeOrderAction(this.getData(), this.messageContainer)
+          placeOrderAction(this.getData(), this.messageContainer)
       );
     },
 
     showErrorMessageFromResponse: function (response) {
-      var self = this;
-      $.each(response.order, function(key,valueObj){
-        $.each(valueObj, function(keyR,valueObjR){
+      let self = this;
+      let reasons = [];
+      $.each(response.order, function(key, valueObj) {
+        let address = key.toLowerCase()
+            .split('_')
+            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(' ');
+        $.each(valueObj, function(keyR, valueObjR){
+          let field = keyR.toLowerCase()
+              .split('_')
+              .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+              .join(' ');
           $.each(valueObjR, function(k, message){
-            alert(key + ': ' + message);
+            reasons.push(address + ' - ' + field + ': ' + message);
           });
         });
+      });
+      globalMessageList.addErrorMessage({
+        message: reasons.join('<br />')
       });
     }
 
