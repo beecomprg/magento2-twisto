@@ -79,6 +79,13 @@ class TwistoAdapter
     public function capture(array $attributes)
     {
         $this->logger->debug(__METHOD__, $attributes);
-        return $this->capturePayment($attributes);
+        try {
+            $invoice = Invoice::create($this->client, $attributes['txn_id'], $attributes['order_id']);
+            $invoice->activate();
+            $this->logger->debug($invoice->invoice_id);
+            return $invoice;
+        } catch (\Twisto\Error $e) {
+            $this->logger->debug($e->getMessage());
+        }
     }
 }

@@ -4,6 +4,7 @@
         <payment>
             <twisto>
                 <active>0</active>
+                <activate_automatically>1</activate_automatically>
                 <title>Twisto</title>
                 <debug>0</debug>
                 <model>TwistoFacade</model>
@@ -20,7 +21,7 @@
                 <is_gateway>1</is_gateway>
                 <can_use_internal>0</can_use_internal>
                 <sort_order>1</sort_order>
-                <order_status>pending</order_status>
+                <order_status>processing</order_status>
                 <paymentInfoKeys>txn_id</paymentInfoKeys>
             </twisto>
         </payment>

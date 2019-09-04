@@ -3,16 +3,21 @@
 namespace Beecom\Twisto\Plugin\Order;
 
 use Beecom\Twisto\Model\Adapter\TwistoAdapterFactory;
+use Beecom\Twisto\Gateway\Config\Config;
 
 class  PlaceAfterPlugin
 {
     protected $adapterFactory;
 
+    protected $config;
+
     public function __construct(
-        TwistoAdapterFactory $adapterFactory
+        TwistoAdapterFactory $adapterFactory,
+        Config $config
     )
     {
         $this->adapterFactory = $adapterFactory;
+        $this->config = $config;
     }
 
 
@@ -23,7 +28,8 @@ class  PlaceAfterPlugin
      */
     public function afterPlace(\Magento\Sales\Api\OrderManagementInterface $orderManagementInterface, $order)
     {
-        if($order->getPayment()->getMethod() == 'twisto'){
+        if($this->config->isAutoInvoiceActivationEnabled($order->getStoreId())
+            && $order->getPayment()->getMethod() == 'twisto'){
             $this->adapterFactory->create($order->getStoreId())
                 ->createInvoice($order);
         }

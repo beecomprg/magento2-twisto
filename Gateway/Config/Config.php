@@ -15,6 +15,7 @@ class Config extends \Magento\Payment\Gateway\Config\Config
 {
     const KEY_PRODUCTION_MODE = 'production_mode';
     const KEY_ACTIVE = 'active';
+    const KEY_ACTIVATE_AUTOMATICALLY = 'activate_automatically';
     const KEY_PUBLIC_KEY = 'public_key';
     const KEY_SECRET_KEY = 'secret_key';
 
@@ -73,5 +74,16 @@ class Config extends \Magento\Payment\Gateway\Config\Config
     public function getSecretKey($storeId = null)
     {
         return $this->getValue(self::KEY_SECRET_KEY, $storeId);
+    }
+
+    /**
+     * Gets Payment configuration status.
+     *
+     * @param int|null $storeId
+     * @return bool
+     */
+    public function isAutoInvoiceActivationEnabled($storeId = null)
+    {
+        return (bool) $this->isActive($storeId) && $this->getValue(self::KEY_ACTIVATE_AUTOMATICALLY, $storeId);
     }
 }
