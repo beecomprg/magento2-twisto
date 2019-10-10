@@ -292,6 +292,7 @@ define([
 
                       } else {
                         // platba byla zamítnuta
+                        fullScreenLoader.stopLoader();
                         globalMessageList.addErrorMessage({
                           message: response.reason
                         });
