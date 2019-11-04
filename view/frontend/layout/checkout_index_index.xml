@@ -3,7 +3,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="head.additional">
-            <block class="Beecom\Twisto\Block\Head" name="beecom.twisto.head.script" template="Beecom_Twisto::head/script.phtml"/>
+            <block ifconfig="payment/twisto/active" class="Beecom\Twisto\Block\Head" name="beecom.twisto.head.script" template="Beecom_Twisto::head/script.phtml"/>
         </referenceBlock>
         <referenceBlock name="checkout.root">
             <arguments>
