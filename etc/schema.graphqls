@@ -1,0 +1,36 @@
+type Mutation {
+    twistoCallback(twistoInput: TwistoInput!, guestCartId: String): TwistoPayload @resolver(class:"\\Beecom\\Twisto\\Model\\Resolver\\TwistoCallback")
+    twistoCheck(payload: String!): TwistoResponse @resolver(class:"\\Beecom\\Twisto\\Model\\Resolver\\TwistoCheck")
+    twistoTransaction(transaction_id: String!, guestCartId: String): TwistoTransaction @resolver(class:"\\Beecom\\Twisto\\Model\\Resolver\\TwistoTransaction")
+}
+
+input TwistoInput {
+    city: String,
+    company: String,
+    country_id: String,
+    email: String,
+    firstname: String,
+    lastname: String,
+    postcode: String,
+    street: [String],
+    telephone: String,
+    region: String,
+    region_code: String,
+    region_id: Int
+}
+
+type TwistoTransaction {
+    transaction_id: String,
+    status: Boolean
+}
+
+type TwistoResponse {
+    transaction_id: String,
+    status: String,
+    status_id: Int,
+    reason: String
+}
+
+type TwistoPayload {
+    payload: String
+}

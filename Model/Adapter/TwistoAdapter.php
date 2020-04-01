@@ -43,6 +43,11 @@ class TwistoAdapter
         $this->logger = $logger;
     }
 
+    public function checkPayload($payload)
+    {
+        return $this->client->requestJson('POST', 'check/', $payload);
+    }
+
     /**
      * @param $customer
      * @param $order
