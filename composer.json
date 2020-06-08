@@ -3,7 +3,7 @@
   "description": "Magento 2 Twisto payment gateway",
   "type": "magento2-module",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "authors": [

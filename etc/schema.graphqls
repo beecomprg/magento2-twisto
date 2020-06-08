@@ -5,7 +5,7 @@ type Mutation {
 }
 
 type StoreConfig {
-    twisto_branding: String
+    twisto_branding: Boolean
 }
 
 input TwistoInput {
