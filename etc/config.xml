@@ -11,6 +11,7 @@
                 <payment_action>capture</payment_action>
                 <public_key></public_key>
                 <secret_key></secret_key>
+                <twisto_branding>0</twisto_branding>
                 <can_authorize>0</can_authorize>
                 <can_capture>1</can_capture>
                 <can_void>0</can_void>
