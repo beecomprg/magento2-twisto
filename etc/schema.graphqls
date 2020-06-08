@@ -4,6 +4,10 @@ type Mutation {
     twistoTransaction(transaction_id: String!, guestCartId: String): TwistoTransaction @resolver(class:"\\Beecom\\Twisto\\Model\\Resolver\\TwistoTransaction")
 }
 
+type StoreConfig {
+    twisto_branding: String
+}
+
 input TwistoInput {
     city: String,
     company: String,
