@@ -189,6 +189,7 @@ class TwistoCallback implements ResolverInterface
         $addressName = implode(" ", [$address->getFirstname(), $address->getLastname()]);
         $phoneNumberObject = $phoneNumberUtil->parse($address->getTelephone(), 'CZ');
         $phoneNumberFormatted = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+        $phoneNumberFormatted = str_replace(' ', '', $phoneNumberFormatted);
         return new Address(
             substr($addressName, 0, 100),
             preg_replace('#\R+#', ' ', substr($address->getStreetFull(), 0, 100)),
@@ -210,6 +211,7 @@ class TwistoCallback implements ResolverInterface
         $addressName = implode(" ", [$object['firstname'], $object['lastname']]);
         $phoneNumberObject = $phoneNumberUtil->parse($object['telephone'], 'CZ');
         $phoneNumberFormatted = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+        $phoneNumberFormatted = str_replace(' ', '', $phoneNumberFormatted);
         return new Address(
             substr($addressName, 0, 100),
             preg_replace('#\R+#', ' ', substr(implode(' ', $object['street']), 0, 100)),
